@@ -35,6 +35,7 @@ KEEP_DAYS = config.getint('BACKUP', 'KEEP_DAYS')
 BACKUP_FORMAT = config.get('BACKUP', 'BACKUP_FORMAT')
 
 GOOGLE_CREDENTIALS_FILE = config.get('GOOGLE_DRIVE', 'GOOGLE_CREDENTIALS_FILE')
+GOOGLE_DRIVE_FOLDER_ID = config.get('GOOGLE_DRIVE', 'GOOGLE_DRIVE_FOLDER_ID')
 
 # --------- XÁC THỰC PYDRIVE ---------
 def authenticate_google_drive():
@@ -89,7 +90,10 @@ def upload_to_google_drive(drive, file_path):
     """Tải file lên Google Drive."""
     print(f"Đang tải lên Google Drive: {file_path}")
     file_name = os.path.basename(file_path)
-    file_drive = drive.CreateFile({"title": file_name})
+    file_drive = drive.CreateFile({
+        "title": file_name,
+        "parents": [{"id": GOOGLE_DRIVE_FOLDER_ID}]
+    })
     file_drive.SetContentFile(file_path)
     file_drive.Upload()
     print(f"Đã tải lên thành công: {file_name}")
