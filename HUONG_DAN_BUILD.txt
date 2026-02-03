@@ -1,0 +1,85 @@
+╔══════════════════════════════════════════════════════════════╗
+║        HƯỚNG DẪN BUILD ODOO BACKUP THÀNH FILE EXE            ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 YÊU CẦU:
+-----------
+1. Python 3.7 trở lên đã được cài đặt trên Windows
+2. Kết nối Internet để tải các thư viện
+
+🔨 CÁCH BUILD:
+--------------
+1. Mở Command Prompt (cmd) với quyền Administrator
+2. Di chuyển đến thư mục chứa code:
+   cd đường\dẫn\đến\odoo_backup
+
+3. Chạy lệnh build:
+   build.bat
+
+4. Chờ quá trình build hoàn tất (có thể mất 2-5 phút)
+
+📦 KẾT QUẢ:
+-----------
+Sau khi build xong, trong thư mục "dist" sẽ có:
+  ✓ odoo_backup.exe        - File chương trình chính
+  ✓ config.ini             - File cấu hình
+  ✓ config.ini.example     - File mẫu cấu hình
+
+🚀 TRIỂN KHAI LÊN WINDOWS SERVER:
+---------------------------------
+1. Copy toàn bộ thư mục "dist" lên Windows Server
+
+2. Trên server, đổi tên thư mục "dist" thành tên bạn muốn
+   (ví dụ: "odoo_backup")
+
+3. Chỉnh sửa file config.ini với thông tin của bạn:
+   - ODOO_URL: Địa chỉ Odoo server
+   - DATABASE_NAME: Tên database cần backup
+   - MASTER_PASSWORD: Master password của Odoo
+   - Các tham số khác...
+
+4. Đảm bảo có file credentials.json và client_secrets.json
+   (cho Google Drive) trong cùng thư mục
+
+5. Chạy thử:
+   odoo_backup.exe
+
+📅 TỰ ĐỘNG HÓA (WINDOWS TASK SCHEDULER):
+-----------------------------------------
+1. Mở Task Scheduler
+2. Tạo Basic Task mới
+3. Action: Start a program
+4. Program/script: Đường dẫn đến odoo_backup.exe
+5. Start in: Thư mục chứa odoo_backup.exe
+6. Thiết lập lịch chạy (ví dụ: hàng ngày lúc 2 giờ sáng)
+
+⚠️ LƯU Ý:
+----------
+- File config.ini phải ở cùng thư mục với file .exe
+- Đảm bảo credentials.json và client_secrets.json đã được cấu hình
+- Master password phải đúng với Odoo server
+- Kiểm tra kết nối mạng đến Odoo server
+
+🔧 XỬ LÝ LỖI:
+--------------
+Nếu gặp lỗi khi build:
+1. Kiểm tra Python đã cài đặt đúng chưa: python --version
+2. Cài thủ công các thư viện: pip install -r requirements.txt
+3. Chạy PyInstaller trực tiếp:
+   pyinstaller --onefile --console odoo_backup.py
+
+Nếu gặp lỗi khi chạy file .exe:
+1. Kiểm tra file config.ini có đúng định dạng không
+2. Kiểm tra các thông tin cấu hình có chính xác không
+3. Chạy với Command Prompt để xem thông báo lỗi chi tiết
+
+💡 TIPS:
+--------
+- Backup file config.ini trước khi cập nhật chương trình
+- Test chương trình trên môi trường dev trước khi deploy production
+- Kiểm tra log để đảm bảo backup chạy thành công
+- Giữ bản copy của credentials.json ở nơi an toàn
+
+═══════════════════════════════════════════════════════════════
+Nếu cần hỗ trợ, liên hệ người phát triển
+═══════════════════════════════════════════════════════════════

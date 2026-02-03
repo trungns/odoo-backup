@@ -1,0 +1,161 @@
+╔══════════════════════════════════════════════════════════════╗
+║     HƯỚNG DẪN BUILD FILE .EXE TRÊN WINDOWS SERVER            ║
+║     (Dành cho người dùng macOS muốn build cho Windows)      ║
+╚══════════════════════════════════════════════════════════════╝
+
+⚠️ LƯU Ý QUAN TRỌNG:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PyInstaller trên macOS KHÔNG THỂ build file .exe cho Windows!
+Bạn cần build trực tiếp trên Windows Server.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 BƯỚC 1: CHUẨN BỊ TRÊN MACBOOK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Tạo file ZIP chứa toàn bộ source code:
+   - odoo_backup.py
+   - config.ini.example
+   - requirements.txt
+   - build.bat
+   - build_simple.bat
+
+2. Copy file ZIP lên Windows Server qua:
+   - USB
+   - Email
+   - FTP/SFTP
+   - Google Drive/OneDrive
+   - Remote Desktop
+
+📋 BƯỚC 2: CÀI ĐẶT PYTHON TRÊN WINDOWS SERVER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Tải Python từ: https://www.python.org/downloads/
+   (Khuyến nghị: Python 3.9 hoặc 3.10)
+
+2. Khi cài đặt:
+   ☑ Tích chọn "Add Python to PATH"
+   ☑ Tích chọn "Install pip"
+
+3. Kiểm tra cài đặt thành công:
+   Mở Command Prompt và gõ:
+
+   python --version
+   pip --version
+
+   Nếu hiện phiên bản Python và pip → Thành công!
+
+📋 BƯỚC 3: BUILD FILE .EXE TRÊN WINDOWS SERVER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Giải nén file ZIP vào thư mục (ví dụ: C:\odoo_backup)
+
+2. Mở Command Prompt với quyền Administrator:
+   - Nhấn phím Windows
+   - Gõ "cmd"
+   - Nhấn chuột phải vào "Command Prompt"
+   - Chọn "Run as administrator"
+
+3. Di chuyển đến thư mục code:
+
+   cd C:\odoo_backup
+
+4. Chạy script build:
+
+   build.bat
+
+   HOẶC nếu gặp lỗi, chạy từng lệnh:
+
+   pip install -r requirements.txt
+   pyinstaller --onefile --console --name odoo_backup odoo_backup.py
+   copy config.ini.example dist\config.ini
+   copy config.ini.example dist\config.ini.example
+
+5. Đợi 2-5 phút để build hoàn tất
+
+📋 BƯỚC 4: KẾT QUẢ VÀ TRIỂN KHAI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sau khi build xong, trong thư mục "dist" sẽ có:
+
+  C:\odoo_backup\dist\
+  ├── odoo_backup.exe         ← File chính
+  ├── config.ini              ← File cấu hình
+  └── config.ini.example      ← File mẫu
+
+TRIỂN KHAI:
+
+1. Copy thư mục "dist" đến vị trí muốn chạy
+   (ví dụ: C:\Program Files\OdooBackup\)
+
+2. Đổi tên thư mục "dist" thành tên bạn muốn
+
+3. Chỉnh sửa file config.ini:
+   - ODOO_URL = http://your-server:8069
+   - DATABASE_NAME = your_database
+   - MASTER_PASSWORD = your_password
+   - ...
+
+4. Đảm bảo có file Google Drive credentials:
+   - credentials.json
+   - client_secrets.json
+
+5. Test chạy thử:
+
+   odoo_backup.exe
+
+📋 BƯỚC 5: TỰ ĐỘNG HÓA (TASK SCHEDULER)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Mở Task Scheduler (Tìm kiếm "Task Scheduler" trong Start Menu)
+
+2. Chọn "Create Basic Task..."
+
+3. Nhập tên: "Odoo Backup Daily"
+
+4. Trigger: "Daily" → Chọn giờ chạy (ví dụ: 2:00 AM)
+
+5. Action: "Start a program"
+   - Program/script: C:\Program Files\OdooBackup\odoo_backup.exe
+   - Start in: C:\Program Files\OdooBackup\
+
+6. Finish
+
+7. Test task:
+   - Nhấn chuột phải vào task vừa tạo
+   - Chọn "Run"
+   - Kiểm tra có chạy thành công không
+
+🔧 XỬ LÝ LỖI THƯỜNG GẶP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Lỗi: 'python' is not recognized...
+   → Python chưa được thêm vào PATH
+   → Cài lại Python và tích "Add Python to PATH"
+
+❌ Lỗi: pip install failed
+   → Chạy CMD với quyền Administrator
+   → Hoặc: python -m pip install --upgrade pip
+
+❌ Lỗi: pyinstaller command not found
+   → Cài thủ công: pip install pyinstaller
+
+❌ Lỗi khi chạy .exe: "config.ini not found"
+   → File config.ini phải cùng thư mục với .exe
+
+❌ Lỗi: "Unable to connect to Odoo"
+   → Kiểm tra ODOO_URL trong config.ini
+   → Kiểm tra firewall/network
+
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Nên build trên chính Windows Server sẽ chạy chương trình
+✓ Test kỹ trước khi setup Task Scheduler
+✓ Backup file config.ini trước khi cập nhật
+✓ Giữ file credentials.json an toàn
+✓ Kiểm tra log định kỳ
+
+═══════════════════════════════════════════════════════════════
+Nếu không có quyền truy cập Windows Server, xem file:
+HUONG_DAN_GITHUB_ACTIONS.txt để build tự động online
+═══════════════════════════════════════════════════════════════

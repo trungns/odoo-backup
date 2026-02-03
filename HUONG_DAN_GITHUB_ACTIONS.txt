@@ -1,0 +1,133 @@
+╔══════════════════════════════════════════════════════════════╗
+║   HƯỚNG DẪN BUILD FILE .EXE TỰ ĐỘNG VỚI GITHUB ACTIONS      ║
+║   (Build trên cloud, không cần Windows Server)              ║
+╚══════════════════════════════════════════════════════════════╝
+
+🌟 ƯU ĐIỂM:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Build trên cloud Windows của GitHub (MIỄN PHÍ)
+✓ Không cần máy Windows
+✓ Tự động build mỗi khi push code
+✓ Có thể build thủ công bất cứ lúc nào
+✓ Download file .exe trực tiếp
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 BƯỚC 1: CHUẨN BỊ GITHUB REPOSITORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Tạo tài khoản GitHub (nếu chưa có): https://github.com
+
+2. Tạo repository mới:
+   - Vào https://github.com/new
+   - Tên repo: odoo-backup (hoặc tên bạn muốn)
+   - Chọn "Private" nếu muốn giữ kín code
+   - Nhấn "Create repository"
+
+📋 BƯỚC 2: PUSH CODE LÊN GITHUB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Mở Terminal trên MacBook và chạy các lệnh sau:
+
+# Di chuyển đến thư mục project
+cd /Users/trungns/training/fitness_app/odoo_backup
+
+# Khởi tạo Git (nếu chưa có)
+git init
+
+# Thêm tất cả file vào Git
+git add .
+
+# Commit code
+git commit -m "Initial commit - Odoo backup tool"
+
+# Kết nối với GitHub repository (thay YOUR_USERNAME)
+git remote add origin https://github.com/YOUR_USERNAME/odoo-backup.git
+
+# Push code lên GitHub
+git branch -M main
+git push -u origin main
+
+📋 BƯỚC 3: KÍCH HOẠT GITHUB ACTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vào repository trên GitHub
+   https://github.com/YOUR_USERNAME/odoo-backup
+
+2. Nhấn tab "Actions"
+
+3. GitHub sẽ tự động phát hiện workflow và bắt đầu build
+
+4. Hoặc nhấn "Run workflow" để build thủ công
+
+📋 BƯỚC 4: DOWNLOAD FILE .EXE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vào tab "Actions"
+
+2. Nhấn vào workflow run mới nhất (màu xanh = thành công)
+
+3. Kéo xuống phần "Artifacts"
+
+4. Nhấn download "odoo-backup-windows"
+
+5. Giải nén file ZIP, bên trong có:
+   - odoo_backup.exe
+   - config.ini
+   - config.ini.example
+
+📋 BƯỚC 5: TRIỂN KHAI LÊN WINDOWS SERVER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Copy file .exe vừa download lên Windows Server
+
+2. Chỉnh sửa config.ini với thông tin thực tế
+
+3. Thêm file credentials.json và client_secrets.json
+
+4. Chạy thử: odoo_backup.exe
+
+5. Setup Task Scheduler (xem HUONG_DAN_BUILD_WINDOWS.txt)
+
+🔄 CẬP NHẬT CODE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Khi cần sửa code:
+
+# Sửa file odoo_backup.py trên MacBook
+
+# Commit và push
+git add .
+git commit -m "Update feature XYZ"
+git push
+
+# GitHub Actions sẽ tự động build lại!
+# Download file .exe mới từ tab Actions
+
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Workflow chạy tự động mỗi khi push code
+✓ Có thể chạy thủ công từ tab Actions → Run workflow
+✓ File .exe giữ trong 30 ngày trên GitHub
+✓ Miễn phí cho public và private repositories
+✓ Không cần cài PyInstaller trên máy
+
+🔧 XỬ LÝ LỖI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Lỗi: Workflow không chạy
+   → Kiểm tra file .github/workflows/build-windows.yml đã push chưa
+   → Vào Settings → Actions → General → Allow all actions
+
+❌ Lỗi: Build failed
+   → Vào tab Actions → Nhấn vào workflow → Xem log lỗi
+   → Kiểm tra requirements.txt có đúng không
+
+❌ Lỗi: Không thấy Artifacts
+   → Đợi workflow chạy xong (màu xanh)
+   → Kéo xuống cuối trang để thấy Artifacts
+
+═══════════════════════════════════════════════════════════════
+⏱️  Thời gian build: ~3-5 phút
+💰 Chi phí: MIỄN PHÍ (2000 phút/tháng cho private repos)
+═══════════════════════════════════════════════════════════════

@@ -1,0 +1,34 @@
+# File cấu hình và credentials nhạy cảm
+config.ini
+credentials.json
+client_secrets.json
+
+# File backup
+backups/
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini

@@ -1,0 +1,32 @@
+[ODOO]
+# URL của Odoo server
+ODOO_URL = http://localhost:8069
+
+# Tên database cần backup (dùng cho đặt tên file)
+ODOO_DB = your_database_name
+
+# Master password của Odoo (dùng để backup)
+MASTER_PASSWORD = odoo@2024
+
+# Tên database thực tế trong Odoo
+DATABASE_NAME = dtxco_2024
+
+# Username admin (nếu cần)
+ODOO_USERNAME = your_admin_username
+
+# Password admin (nếu cần)
+ODOO_PASSWORD = your_admin_password
+
+[BACKUP]
+# Thư mục lưu tạm các file backup
+BACKUP_DIR = backups
+
+# Số ngày giữ lại file backup cũ
+KEEP_DAYS = 5
+
+# Định dạng backup (zip hoặc dump)
+BACKUP_FORMAT = zip
+
+[GOOGLE_DRIVE]
+# File credentials của Google Drive
+GOOGLE_CREDENTIALS_FILE = client_secrets.json
