@@ -16,7 +16,7 @@ def load_config():
         print("Vui lòng tạo file config.ini với các thông tin cấu hình.")
         raise FileNotFoundError(f"File {config_file} không tồn tại")
 
-    config.read(config_file, encoding='utf-8')
+    config.read(config_file, encoding='utf-8-sig')
     return config
 
 # Đọc cấu hình
