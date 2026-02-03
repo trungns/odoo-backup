@@ -3,7 +3,10 @@ name: Build Windows EXE
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:  # Cho phép chạy thủ công
+  workflow_dispatch:  # Cho phép chạy thủ công từ tab Actions
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -11,10 +14,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
@@ -28,12 +31,13 @@ jobs:
         pyinstaller --onefile --console --name odoo_backup odoo_backup.py
 
     - name: Copy config files to dist
+      shell: cmd
       run: |
-        copy config.ini.example dist\config.ini
-        copy config.ini.example dist\config.ini.example
+        copy "config.ini.example" "dist\config.ini"
+        copy "config.ini.example" "dist\config.ini.example"
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: odoo-backup-windows
         path: |
