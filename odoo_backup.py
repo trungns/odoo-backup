@@ -40,13 +40,21 @@ GOOGLE_CREDENTIALS_FILE = config.get('GOOGLE_DRIVE', 'GOOGLE_CREDENTIALS_FILE')
 def authenticate_google_drive():
     """Xác thực với Google Drive."""
     gauth = GoogleAuth()
-    gauth.LoadCredentialsFile("credentials.json")
+    try:
+        gauth.LoadCredentialsFile("credentials.json")
+    except Exception:
+        # Credentials file cũ bị corrupt hoặc incompatible — xóa và tạo lại
+        if os.path.exists("credentials.json"):
+            os.remove("credentials.json")
+        gauth.credentials = None
+
     if gauth.credentials is None:
-        gauth.LocalWebserverAuth()  # Cấp quyền nếu chưa có
+        # CommandLineAuth: print URL ra terminal, không cần browser trên server
+        gauth.CommandLineAuth()
     elif gauth.access_token_expired:
-        gauth.Refresh()  # Làm mới nếu hết hạn
+        gauth.Refresh()
     else:
-        gauth.Authorize()  # Xác thực
+        gauth.Authorize()
     gauth.SaveCredentialsFile("credentials.json")
     return GoogleDrive(gauth)
 
